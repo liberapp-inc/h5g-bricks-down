@@ -11,13 +11,13 @@ const FONT_COLOR = 0xe85a4f;
 const BLOCK_COLOR = 0xd8c3a5;
 const BLOCK_COLOR2 = 0xe98074;
 const BLOCK_COLOR3 = 0x8e8d8a;
+const KEY_BLOCK_COLOR = 0xff0000;
 
 class Game {
 
     static loadSceneGamePlay() {
         PhysicsObject.deltaScale = 1;
         new Score();
-        new Ground();
         new Player();
         new StartMessage();
     }

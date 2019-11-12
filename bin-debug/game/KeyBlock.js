@@ -1,5 +1,5 @@
 // Liberapp 2019 - Tahiti Katagai
-// レンガ
+// キーレンガ　落としたらミス
 var __reflect = (this && this.__reflect) || function (p, c, t) {
     p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
 };
@@ -10,43 +10,22 @@ var __extends = this && this.__extends || function __extends(t, e) {
 for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
 r.prototype = e.prototype, t.prototype = new r();
 };
-var Block = (function (_super) {
-    __extends(Block, _super);
-    function Block(px, py, type) {
+var KeyBlock = (function (_super) {
+    __extends(KeyBlock, _super);
+    function KeyBlock(px, py, type) {
         var _this = _super.call(this) || this;
         _this.scale = 1;
-        Block.blocks.push(_this);
         _this.sizeW = BLOCK_SIZE_PER_H * Util.height * 0.995;
         _this.sizeH = _this.sizeW;
-        switch (randI(0, 3)) {
-            case 0:
-                _this.color = BLOCK_COLOR;
-                break;
-            case 1:
-                _this.color = BLOCK_COLOR2;
-                break;
-            case 2:
-                _this.color = BLOCK_COLOR3;
-                break;
-        }
+        _this.color = KEY_BLOCK_COLOR;
         _this.setDisplay(px, py, type);
         _this.setBody(px, py, type);
-        _this.display.touchEnabled = true;
-        _this.display.addEventListener(egret.TouchEvent.TOUCH_BEGIN, _this.touchBegin, _this);
-        _this.display.addEventListener(egret.TouchEvent.TOUCH_TAP, _this.touchBegin, _this);
+        _this.display.touchEnabled = false;
         return _this;
     }
-    Block.prototype.onDestroy = function () {
-        var _this = this;
-        this.display.parent.removeEventListener(egret.TouchEvent.TOUCH_BEGIN, this.touchBegin, this);
-        Block.blocks = Block.blocks.filter(function (obj) { return obj != _this; });
+    KeyBlock.prototype.onDestroy = function () {
     };
-    // touch
-    Block.prototype.touchBegin = function (e) {
-        new EffectCircle(this.display.x, this.display.y, this.sizeW, this.color);
-        this.destroy();
-    };
-    Block.prototype.setDisplay = function (px, py, type) {
+    KeyBlock.prototype.setDisplay = function (px, py, type) {
         if (this.display)
             this.display.parent.removeChild(this.display);
         var shape = new egret.Shape();
@@ -71,7 +50,7 @@ var Block = (function (_super) {
         }
         shape.graphics.endFill();
     };
-    Block.prototype.setBody = function (px, py, type) {
+    KeyBlock.prototype.setBody = function (px, py, type) {
         switch (type) {
             case 0:
                 this.body = new p2.Body({ gravityScale: 1, mass: 1, position: [this.p2m(px), this.p2m(py)] });
@@ -92,19 +71,28 @@ var Block = (function (_super) {
         this.body.displays = [this.display];
         PhysicsObject.world.addBody(this.body);
     };
-    Block.prototype.fixedUpdate = function () {
+    KeyBlock.prototype.fixedUpdate = function () {
         this.scale += (1 - this.scale) * 0.1;
         if (this.py < Camera2D.y - Util.height) {
+            if (GameOver.I == null) {
+                new GameOver();
+                Player.I.setStateNone();
+                PhysicsObject.deltaScale = 0.1;
+            }
+            var r = this.sizeH * Camera2D.scale;
+            for (var i = 0; i < 4; i++) {
+                var a = rand() * Math.PI; // 上方向のみ
+                var vx = Math.cos(a);
+                var vy = -Math.sin(a);
+                var rv = r * (2 + i * 0.5);
+                new EffectLine(this.display.x + vx * r, this.display.y + vy * r, vx * rv, vy * rv, this.color);
+            }
+            new EffectCircle(this.display.x, this.display.y, r, this.color);
             this.destroy();
             return;
         }
     };
-    Block.prototype.drop = function () {
-        this.body.setZeroForce();
-        this.body.gravityScale = 1.0;
-    };
-    Block.blocks = [];
-    return Block;
+    return KeyBlock;
 }(PhysicsObject));
-__reflect(Block.prototype, "Block");
-//# sourceMappingURL=Block.js.map
+__reflect(KeyBlock.prototype, "KeyBlock");
+//# sourceMappingURL=KeyBlock.js.map

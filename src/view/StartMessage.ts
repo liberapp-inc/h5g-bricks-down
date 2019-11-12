@@ -16,6 +16,7 @@ class StartMessage extends GameObject{
         this.texts.forEach( text =>{ GameObject.baseDisplay.addChild( text ); });
 
         GameObject.baseDisplay.once(egret.TouchEvent.TOUCH_TAP, this.tap, this);
+        PhysicsObject.deltaScale = 0;
     }
 
     onDestroy(){
@@ -27,7 +28,7 @@ class StartMessage extends GameObject{
     update() {}
 
     tap(e:egret.TouchEvent){
-        // Player.I.setStateHold();
+        PhysicsObject.deltaScale = 1;
         this.destroy();
     }
 }

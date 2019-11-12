@@ -11,13 +11,13 @@ var FONT_COLOR = 0xe85a4f;
 var BLOCK_COLOR = 0xd8c3a5;
 var BLOCK_COLOR2 = 0xe98074;
 var BLOCK_COLOR3 = 0x8e8d8a;
+var KEY_BLOCK_COLOR = 0xff0000;
 var Game = (function () {
     function Game() {
     }
     Game.loadSceneGamePlay = function () {
         PhysicsObject.deltaScale = 1;
         new Score();
-        new Ground();
         new Player();
         new StartMessage();
     };

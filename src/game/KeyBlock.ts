@@ -1,9 +1,8 @@
 // Liberapp 2019 - Tahiti Katagai
-// レンガ
+// キーレンガ　落としたらミス
 
-class Block extends PhysicsObject{
+class KeyBlock extends PhysicsObject{
 
-    static blocks:Block[] = [];
     sizeW:number;
     sizeH:number;
     color:number;
@@ -12,31 +11,16 @@ class Block extends PhysicsObject{
     constructor( px:number, py:number, type:number ) {
         super();
 
-        Block.blocks.push(this);
         this.sizeW = BLOCK_SIZE_PER_H * Util.height * 0.995;
         this.sizeH = this.sizeW;
-        switch( randI(0,3) ){
-            case 0: this.color = BLOCK_COLOR;   break;
-            case 1: this.color = BLOCK_COLOR2;  break;
-            case 2: this.color = BLOCK_COLOR3;  break;
-        }
+        this.color = KEY_BLOCK_COLOR;
         this.setDisplay( px, py, type );
         this.setBody( px, py, type );
 
-        this.display.touchEnabled = true;
-        this.display.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.touchBegin, this);
-        this.display.addEventListener(egret.TouchEvent.TOUCH_TAP, this.touchBegin, this);
-    }
+        this.display.touchEnabled = false;
+     }
 
     onDestroy(){
-        this.display.parent.removeEventListener(egret.TouchEvent.TOUCH_BEGIN, this.touchBegin, this);
-        Block.blocks = Block.blocks.filter( obj => obj != this );
-    }
-
-    // touch
-    touchBegin(e:egret.TouchEvent) {
-        new EffectCircle( this.display.x, this.display.y, this.sizeW, this.color );
-        this.destroy();
     }
 
     setDisplay( px:number, py:number, type:number ){
@@ -92,13 +76,27 @@ class Block extends PhysicsObject{
         this.scale += (1 - this.scale) * 0.1;
 
         if( this.py < Camera2D.y - Util.height ){
+            if( GameOver.I == null ){
+                new GameOver();
+                Player.I.setStateNone();
+                PhysicsObject.deltaScale = 0.1;
+            }
+            const r = this.sizeH * Camera2D.scale;
+            for( let i=0 ; i<4 ; i++ ) {
+                let a = rand() * Math.PI;   // 上方向のみ
+                let vx =  Math.cos( a );
+                let vy = -Math.sin( a );
+                let rv = r * ( 2 + i*0.5 );
+                new EffectLine(
+                    this.display.x + vx * r,
+                    this.display.y + vy * r,
+                    vx * rv,
+                    vy * rv,
+                    this.color );
+            }
+            new EffectCircle( this.display.x, this.display.y, r, this.color );
             this.destroy();
             return;
         }
-    }
-
-    drop(){
-        this.body.setZeroForce();
-        this.body.gravityScale = 1.0;
     }
 }

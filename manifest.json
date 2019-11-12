@@ -15,6 +15,7 @@
 		"bin-debug/game/Block.js",
 		"bin-debug/game/Game.js",
 		"bin-debug/game/Ground.js",
+		"bin-debug/game/KeyBlock.js",
 		"bin-debug/game/Player.js",
 		"bin-debug/system/Button.js",
 		"bin-debug/effect/EffectCircle.js",

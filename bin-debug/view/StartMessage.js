@@ -21,6 +21,7 @@ var StartMessage = (function (_super) {
         _this.texts[2] = Util.newTextField("赤いブロックを落とさないように", Util.width / 20, FONT_COLOR, 0.5, 0.35, true, false);
         _this.texts.forEach(function (text) { GameObject.baseDisplay.addChild(text); });
         GameObject.baseDisplay.once(egret.TouchEvent.TOUCH_TAP, _this.tap, _this);
+        PhysicsObject.deltaScale = 0;
         return _this;
     }
     StartMessage.prototype.onDestroy = function () {
@@ -30,7 +31,7 @@ var StartMessage = (function (_super) {
     };
     StartMessage.prototype.update = function () { };
     StartMessage.prototype.tap = function (e) {
-        // Player.I.setStateHold();
+        PhysicsObject.deltaScale = 1;
         this.destroy();
     };
     StartMessage.I = null;
