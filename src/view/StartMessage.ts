@@ -5,6 +5,7 @@ class StartMessage extends GameObject{
 
     static I:StartMessage = null;
     texts:egret.TextField[] = [];
+    button:Button = null;
     
     constructor() {
         super();
@@ -15,20 +16,25 @@ class StartMessage extends GameObject{
         this.texts[2] = Util.newTextField("赤いブロックを落とさないように", Util.width / 20, FONT_COLOR, 0.5, 0.35, true, false);
         this.texts.forEach( text =>{ GameObject.baseDisplay.addChild( text ); });
 
-        GameObject.baseDisplay.once(egret.TouchEvent.TOUCH_TAP, this.tap, this);
+        this.button = new Button( null, 0, 0, 0.5, 0.5, 1, 1, 0x000000, 0.0, this.onTap ); // 透明な全画面ボタン
         PhysicsObject.deltaScale = 0;
     }
 
     onDestroy(){
         this.texts.forEach( text =>{ text.parent.removeChild( text ); });
         this.texts = null;
+        this.button.destroy();
         StartMessage.I = null;
     }
 
-    update() {}
+    update() {
+        if( PhysicsObject.deltaScale > 0 ){
+            this.destroy();
+        }
+    }
 
-    tap(e:egret.TouchEvent){
+    onTap(){
         PhysicsObject.deltaScale = 1;
-        this.destroy();
+        // this.destroy();  できない罠 このthis=this.button(呼び出し元)
     }
 }

@@ -48,19 +48,17 @@ class Block extends PhysicsObject{
         GameObject.gameDisplay.addChild(this.display);
         shape.x = px;
         shape.y = py;
+        shape.graphics.lineStyle(3, BLOCK_LINE_COLOR );
         shape.graphics.beginFill( this.color );
         switch( type ){
             case 0:
             shape.graphics.drawRect( -0.5*this.sizeW, -0.5*this.sizeH, this.sizeW, this.sizeH );
             break;
             case 1:
-            shape.graphics.drawRect( -1.0*this.sizeW, -0.5*this.sizeH, this.sizeW, this.sizeH );
-            shape.graphics.drawRect( +0.0*this.sizeW, -0.5*this.sizeH, this.sizeW, this.sizeH );
+            shape.graphics.drawRect( -1.0*this.sizeW, -0.5*this.sizeH, this.sizeW*2, this.sizeH );
             break;
             case 2:
-            shape.graphics.drawRect( -1.0*this.sizeW, -1.0*this.sizeH, this.sizeW, this.sizeH );
-            shape.graphics.drawRect( +0.0*this.sizeW, -1.0*this.sizeH, this.sizeW, this.sizeH );
-            shape.graphics.drawRect( +0.0*this.sizeW, +0.0*this.sizeH, this.sizeW, this.sizeH );
+            shape.graphics.drawRect( -1.5*this.sizeW, -0.5*this.sizeH, this.sizeW*3, this.sizeH );
             break;
         }
         shape.graphics.endFill();
@@ -74,14 +72,11 @@ class Block extends PhysicsObject{
             break;
             case 1:
             this.body = new p2.Body( {gravityScale:1, mass:2, position:[this.p2m(px), this.p2m(py)]} );
-            this.body.addShape(new p2.Box( { width:this.sizeW, height:this.sizeH } ), [-0.5*this.sizeW, 0], 0);
-            this.body.addShape(new p2.Box( { width:this.sizeW, height:this.sizeH } ), [+0.5*this.sizeW, 0], 0);
+            this.body.addShape(new p2.Box( { width:this.sizeW*2, height:this.sizeH } ), [-0*this.sizeW, 0], 0);
             break;
             case 2:
             this.body = new p2.Body( {gravityScale:1, mass:3, position:[this.p2m(px), this.p2m(py)]} );
-            this.body.addShape(new p2.Box( { width:this.sizeW, height:this.sizeH } ), [-0.5*this.sizeW, -0.5*this.sizeH], 0);
-            this.body.addShape(new p2.Box( { width:this.sizeW, height:this.sizeH } ), [+0.5*this.sizeW, -0.5*this.sizeH], 0);
-            this.body.addShape(new p2.Box( { width:this.sizeW, height:this.sizeH } ), [+0.5*this.sizeW, +0.5*this.sizeH], 0);
+            this.body.addShape(new p2.Box( { width:this.sizeW*3, height:this.sizeH } ), [ 0.0*this.sizeW, 0], 0);
             break;
         }
         this.body.displays = [this.display];

@@ -15,24 +15,30 @@ var StartMessage = (function (_super) {
     function StartMessage() {
         var _this = _super.call(this) || this;
         _this.texts = [];
+        _this.button = null;
         StartMessage.I = _this;
         _this.texts[0] = Util.newTextField("レンガくずし", Util.width / 12, FONT_COLOR, 0.5, 0.2, true, false);
         _this.texts[1] = Util.newTextField("レンガをタップして破壊", Util.width / 20, FONT_COLOR, 0.5, 0.3, true, false);
         _this.texts[2] = Util.newTextField("赤いブロックを落とさないように", Util.width / 20, FONT_COLOR, 0.5, 0.35, true, false);
         _this.texts.forEach(function (text) { GameObject.baseDisplay.addChild(text); });
-        GameObject.baseDisplay.once(egret.TouchEvent.TOUCH_TAP, _this.tap, _this);
+        _this.button = new Button(null, 0, 0, 0.5, 0.5, 1, 1, 0x000000, 0.0, _this.onTap); // 透明な全画面ボタン
         PhysicsObject.deltaScale = 0;
         return _this;
     }
     StartMessage.prototype.onDestroy = function () {
         this.texts.forEach(function (text) { text.parent.removeChild(text); });
         this.texts = null;
+        this.button.destroy();
         StartMessage.I = null;
     };
-    StartMessage.prototype.update = function () { };
-    StartMessage.prototype.tap = function (e) {
+    StartMessage.prototype.update = function () {
+        if (PhysicsObject.deltaScale > 0) {
+            this.destroy();
+        }
+    };
+    StartMessage.prototype.onTap = function () {
         PhysicsObject.deltaScale = 1;
-        this.destroy();
+        // this.destroy();  できない罠 このthis=this.button(呼び出し元)
     };
     StartMessage.I = null;
     return StartMessage;

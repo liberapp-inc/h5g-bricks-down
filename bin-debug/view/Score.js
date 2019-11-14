@@ -42,7 +42,10 @@ var Score = (function (_super) {
     Score.prototype.update = function () { };
     Score.prototype.addPoint = function (point) {
         if (point === void 0) { point = 1; }
-        this.point += point;
+        this.setPoint(this.point + point);
+    };
+    Score.prototype.setPoint = function (point) {
+        this.point = point;
         this.text.text = "" + this.point.toFixed();
         if (this.bestScore < this.point) {
             this.textBest.text = "BEST:" + this.point.toFixed();

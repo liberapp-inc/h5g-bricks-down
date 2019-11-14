@@ -39,7 +39,11 @@ class Score extends GameObject{
     update(){}
 
     addPoint( point:number=1 ){
-        this.point += point;
+        this.setPoint( this.point + point );
+    }
+
+    setPoint( point:number ){
+        this.point = point;
         this.text.text = "" + this.point.toFixed();
         if( this.bestScore < this.point ){
             this.textBest.text = "BEST:" + this.point.toFixed();

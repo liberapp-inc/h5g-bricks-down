@@ -28,7 +28,7 @@ var Player = (function (_super) {
         var blocksize = Util.h(BLOCK_SIZE_PER_H);
         var x = 0;
         var y = 0;
-        _this.keyBlock = new KeyBlock(x, y, 0);
+        _this.keyBlock = new KeyBlock(x, y, 2);
         Camera2D.x = -Util.w(0.5);
         return _this;
     }
@@ -46,15 +46,22 @@ var Player = (function (_super) {
     };
     Player.prototype.stateNone = function () { };
     Player.prototype.processBricksLine = function () {
-        var headLine = (this.keyBlock.Y - Util.h(0.7)) / this.keyBlock.sizeH;
-        if (this.line < -headLine) {
+        var headLine = (this.keyBlock.Y + Util.h(0.7)) / this.keyBlock.sizeH;
+        if (this.line < headLine) {
             this.line++;
             var size = Util.h(BLOCK_SIZE_PER_H);
             var count = 5;
             var x = size * (-count / 2) + size * 0.5;
             var y = size * this.line;
+            this.ground.my = size * (this.line + 1);
             while (count > 0) {
-                if (count >= 2 && randBool(0.25)) {
+                if (count >= 3 && randBool(0.3)) {
+                    x += size * 1.0;
+                    new Block(x, y, 2);
+                    x += size * 2.0;
+                    count -= 3;
+                }
+                else if (count >= 2 && randBool(0.4)) {
                     x += size * 0.5;
                     new Block(x, y, 1);
                     x += size * 1.5;
@@ -69,8 +76,12 @@ var Player = (function (_super) {
         }
     };
     Player.prototype.processCamera = function () {
-        var camY = this.keyBlock.Y - Util.h(0.3);
-        Camera2D.y = Util.lerp(Camera2D.y, camY, 0.5);
+        // キーブロックが着地している
+        var vy = this.keyBlock.body.velocity[1];
+        if (vy <= 1) {
+            var camY = this.keyBlock.Y - Util.h(0.3);
+            Camera2D.y = Util.lerp(Camera2D.y, camY, 0.1);
+        }
     };
     Player.I = null;
     return Player;
