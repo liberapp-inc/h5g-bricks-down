@@ -15,7 +15,7 @@ class Block extends PhysicsObject{
         Block.blocks.push(this);
         this.sizeW = BLOCK_SIZE_PER_H * Util.height * 0.995;
         this.sizeH = this.sizeW;
-        switch( randI(0,3) ){
+        switch( type ){
             case 0: this.color = BLOCK_COLOR;   break;
             case 1: this.color = BLOCK_COLOR2;  break;
             case 2: this.color = BLOCK_COLOR3;  break;
@@ -86,14 +86,12 @@ class Block extends PhysicsObject{
     fixedUpdate() {
         this.scale += (1 - this.scale) * 0.1;
 
-        if( this.py < Camera2D.y - Util.height ){
+        if( this.py > Player.I.ground.Y + Util.h(0.25) ){
+            if( GameOver.I == null ){
+                Score.I.addPoint();
+            }
             this.destroy();
             return;
         }
-    }
-
-    drop(){
-        this.body.setZeroForce();
-        this.body.gravityScale = 1.0;
     }
 }

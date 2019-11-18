@@ -2,7 +2,8 @@
 // ゲームシーン
 
 const PIXEL_PER_METER = 1;
-const BLOCK_SIZE_PER_H = 1/10;
+const BLOCK_SIZE_PER_H = 1/10;//1/10;
+const BLOCKS = 5;
 
 const SAVE_KEY_BESTSCORE = "bricks-down-bestScore";
 

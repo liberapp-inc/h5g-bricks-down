@@ -14,18 +14,23 @@ var StartMessage = (function (_super) {
     __extends(StartMessage, _super);
     function StartMessage() {
         var _this = _super.call(this) || this;
+        _this.rectFilter = null;
         _this.texts = [];
         _this.button = null;
         StartMessage.I = _this;
-        _this.texts[0] = Util.newTextField("レンガくずし", Util.width / 12, FONT_COLOR, 0.5, 0.2, true, false);
-        _this.texts[1] = Util.newTextField("レンガをタップして破壊", Util.width / 20, FONT_COLOR, 0.5, 0.3, true, false);
-        _this.texts[2] = Util.newTextField("赤いブロックを落とさないように", Util.width / 20, FONT_COLOR, 0.5, 0.35, true, false);
+        _this.rectFilter = new Rect(0, Util.h(0.325), Util.width, Util.h(0.3), 0x000000, false, true);
+        _this.rectFilter.display.alpha = 0.4;
+        _this.texts[0] = Util.newTextField("レンガくずし", Util.width / 12, FONT_COLOR, 0.5, 0.4, true, false);
+        _this.texts[1] = Util.newTextField("レンガをタップして破壊", Util.width / 20, FONT_COLOR, 0.5, 0.5, true, false);
+        _this.texts[2] = Util.newTextField("赤いブロックを落とさないように", Util.width / 20, FONT_COLOR, 0.5, 0.55, true, false);
         _this.texts.forEach(function (text) { GameObject.baseDisplay.addChild(text); });
         _this.button = new Button(null, 0, 0, 0.5, 0.5, 1, 1, 0x000000, 0.0, _this.onTap); // 透明な全画面ボタン
         PhysicsObject.deltaScale = 0;
         return _this;
     }
     StartMessage.prototype.onDestroy = function () {
+        this.rectFilter.destroy();
+        this.rectFilter = null;
         this.texts.forEach(function (text) { text.parent.removeChild(text); });
         this.texts = null;
         this.button.destroy();

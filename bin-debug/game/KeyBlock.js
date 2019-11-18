@@ -15,7 +15,7 @@ var KeyBlock = (function (_super) {
     function KeyBlock(px, py, type) {
         var _this = _super.call(this) || this;
         _this.scale = 1;
-        _this.sizeW = BLOCK_SIZE_PER_H * Util.height * 0.995;
+        _this.sizeW = BLOCK_SIZE_PER_H * Util.height * 0.75; //0.995;
         _this.sizeH = _this.sizeW;
         _this.color = KEY_BLOCK_COLOR;
         _this.setDisplay(px, py, type);
@@ -72,7 +72,9 @@ var KeyBlock = (function (_super) {
     };
     KeyBlock.prototype.fixedUpdate = function () {
         this.scale += (1 - this.scale) * 0.1;
-        Score.I.setPoint(this.Y / Util.h(BLOCK_SIZE_PER_H));
+        // if( GameOver.I == null ){
+        //     Score.I.setPoint( this.Y / Util.h(BLOCK_SIZE_PER_H) );
+        // }
         // 落ちたらミス
         if (this.py > Camera2D.y + Util.height) {
             if (GameOver.I == null) {

@@ -4,7 +4,8 @@ var __reflect = (this && this.__reflect) || function (p, c, t) {
     p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
 };
 var PIXEL_PER_METER = 1;
-var BLOCK_SIZE_PER_H = 1 / 10;
+var BLOCK_SIZE_PER_H = 1 / 10; //1/10;
+var BLOCKS = 5;
 var SAVE_KEY_BESTSCORE = "bricks-down-bestScore";
 var BACK_COLOR = 0x0060e0; // index.htmlで設定
 var FONT_COLOR = 0xffffff;

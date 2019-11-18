@@ -18,7 +18,7 @@ var Block = (function (_super) {
         Block.blocks.push(_this);
         _this.sizeW = BLOCK_SIZE_PER_H * Util.height * 0.995;
         _this.sizeH = _this.sizeW;
-        switch (randI(0, 3)) {
+        switch (type) {
             case 0:
                 _this.color = BLOCK_COLOR;
                 break;
@@ -89,14 +89,13 @@ var Block = (function (_super) {
     };
     Block.prototype.fixedUpdate = function () {
         this.scale += (1 - this.scale) * 0.1;
-        if (this.py < Camera2D.y - Util.height) {
+        if (this.py > Player.I.ground.Y + Util.h(0.25)) {
+            if (GameOver.I == null) {
+                Score.I.addPoint();
+            }
             this.destroy();
             return;
         }
-    };
-    Block.prototype.drop = function () {
-        this.body.setZeroForce();
-        this.body.gravityScale = 1.0;
     };
     Block.blocks = [];
     return Block;

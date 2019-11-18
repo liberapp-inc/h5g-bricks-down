@@ -11,7 +11,7 @@ class KeyBlock extends PhysicsObject{
     constructor( px:number, py:number, type:number ) {
         super();
 
-        this.sizeW = BLOCK_SIZE_PER_H * Util.height * 0.995;
+        this.sizeW = BLOCK_SIZE_PER_H * Util.height * 0.75;//0.995;
         this.sizeH = this.sizeW;
         this.color = KEY_BLOCK_COLOR;
         this.setDisplay( px, py, type );
@@ -74,7 +74,9 @@ class KeyBlock extends PhysicsObject{
     fixedUpdate() {
         this.scale += (1 - this.scale) * 0.1;
 
-        Score.I.setPoint( this.Y / Util.h(BLOCK_SIZE_PER_H) );
+        // if( GameOver.I == null ){
+        //     Score.I.setPoint( this.Y / Util.h(BLOCK_SIZE_PER_H) );
+        // }
 
         // 落ちたらミス
         if( this.py > Camera2D.y + Util.height ){
