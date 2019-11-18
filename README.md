@@ -3,7 +3,7 @@
 「レンガくずし」
 
 レンガをタップして破壊。赤いブロックは落とさないように。
-<開発中>
+<https://liberapp.net/applications/f6d93180-09d3-11ea-801b-ab3e4d626624/information>
 
 ## ビルド方法
 
