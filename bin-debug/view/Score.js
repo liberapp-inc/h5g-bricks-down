@@ -15,20 +15,13 @@ var Score = (function (_super) {
     function Score() {
         var _this = _super.call(this) || this;
         _this.point = 0;
-        _this.bestScore = 0;
         _this.text = null;
         _this.textBest = null;
         Score.I = _this;
         _this.point = 0;
         _this.text = Util.newTextField("0", Util.width / 22, FONT_COLOR, 0.5, 0.0, true, true);
         GameObject.baseDisplay.addChild(_this.text);
-        var bestScore = egret.localStorage.getItem(SAVE_KEY_BESTSCORE); // string
-        if (bestScore == null) {
-            bestScore = "20";
-            egret.localStorage.setItem(SAVE_KEY_BESTSCORE, bestScore);
-        }
-        _this.bestScore = parseInt(bestScore);
-        _this.textBest = Util.newTextField("BEST:" + bestScore + "", Util.width / 22, FONT_COLOR, 0.0, 0.0, true, true);
+        _this.textBest = Util.newTextField("BEST:" + Score.bestScore + "", Util.width / 22, FONT_COLOR, 0.0, 0.0, true, true);
         GameObject.baseDisplay.addChild(_this.textBest);
         return _this;
     }
@@ -47,11 +40,13 @@ var Score = (function (_super) {
     Score.prototype.setPoint = function (point) {
         this.point = point;
         this.text.text = "" + this.point.toFixed();
-        if (this.bestScore < this.point) {
+        if (Score.bestScore < this.point) {
             this.textBest.text = "BEST:" + this.point.toFixed();
         }
     };
     Score.I = null; // singleton instance
+    Score.bestScore = 0;
+    Score.bestRank = 0;
     return Score;
 }(GameObject));
 __reflect(Score.prototype, "Score");

@@ -24,6 +24,17 @@ var GameOver = (function (_super) {
             .to({ alpha: 0 }, 0)
             .to({ alpha: 1 }, 1000);
         GameObject.baseDisplay.addChild(_this.texts[0]);
+        if (SDK) {
+            if (Score.bestScore < Score.I.point) {
+                Score.bestScore = Score.I.point;
+                Social.setScore(Score.I.point);
+                _this.texts[1] = Util.newTextField("NEW RECORD!", Util.width / 13, FONT_COLOR, 0.5, 0.4, true, false);
+                egret.Tween.get(_this.texts[1], { loop: true })
+                    .to({ alpha: 0 }, 500)
+                    .to({ alpha: 1 }, 500);
+                GameObject.baseDisplay.addChild(_this.texts[1]);
+            }
+        }
         return _this;
     }
     GameOver.prototype.onDestroy = function () {
@@ -34,15 +45,7 @@ var GameOver = (function (_super) {
     GameOver.prototype.update = function () {
         this.step++;
         if (this.step == this.fadeInFrame) {
-            this.retryButton = new Button("リトライ", Util.width / 16, BACK_COLOR, 0.50, 0.55, 0.4, 0.1, FONT_COLOR, 1.0, this.onTapRetry);
-            if (Score.I.point > Score.I.bestScore) {
-                egret.localStorage.setItem(SAVE_KEY_BESTSCORE, Score.I.point.toFixed()); // string
-                this.texts[1] = Util.newTextField("NEW RECORD!", Util.width / 13, FONT_COLOR, 0.5, 0.4, true, false);
-                egret.Tween.get(this.texts[1], { loop: true })
-                    .to({ alpha: 0 }, 500)
-                    .to({ alpha: 1 }, 500);
-                GameObject.baseDisplay.addChild(this.texts[1]);
-            }
+            this.retryButton = new Button("リトライ", Util.width / 16, BACK_COLOR, 0.50, 0.65, 0.4, 0.1, FONT_COLOR, 1.0, this.onTapRetry);
         }
     };
     GameOver.prototype.onTapRetry = function () {

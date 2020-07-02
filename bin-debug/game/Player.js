@@ -46,6 +46,7 @@ var Player = (function (_super) {
     };
     Player.prototype.stateNone = function () { };
     Player.prototype.processBricksLine = function () {
+        // 進行に合わせてブロックライン生成
         var headLine = (Camera2D.y + Util.h(1.0)) / Util.h(BLOCK_SIZE_PER_H);
         if (this.line < headLine) {
             this.line++;
@@ -77,7 +78,7 @@ var Player = (function (_super) {
         }
     };
     Player.prototype.processCamera = function () {
-        // キーブロックが着地している
+        // キーブロックが着地しているなら
         var vy = this.keyBlock.body.velocity[1];
         if (vy <= Util.h(0.01)) {
             var camY = this.keyBlock.Y - Util.h(0.3);
